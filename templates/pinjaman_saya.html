@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1 class="text-2xl font-bold text-slate-900 mb-2">Buku yang Saya Pinjam</h1>
+<p class="text-sm text-slate-500 mb-6">Daftar buku yang aktif dan riwayat peminjaman</p>
+
+<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+  <table class="w-full text-left text-sm">
+    <thead class="bg-slate-50 border-b border-slate-200 text-xs uppercase text-slate-500 font-semibold">
+      <tr>
+        <th class="py-3 px-4">Judul Buku</th>
+        <th class="py-3 px-4">Penulis</th>
+        <th class="py-3 px-4">Tgl Pinjam</th>
+        <th class="py-3 px-4">Tgl Kembali</th>
+        <th class="py-3 px-4">Status</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100">
+      {% for item in pinjaman %}
+      <tr class="hover:bg-slate-50/50">
+        <td class="py-3.5 px-4 font-medium text-slate-800">{{ item.judul }}</td>
+        <td class="py-3.5 px-4 text-slate-500">{{ item.penulis }}</td>
+        <td class="py-3.5 px-4 text-slate-600">{{ item.tanggal_pinjam }}</td>
+        <td class="py-3.5 px-4 text-slate-600">{{ item.tanggal_kembali or '-' }}</td>
+        <td class="py-3.5 px-4">
+          <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium {% if item.status == 'dipinjam' %}bg-amber-100 text-amber-800{% else %}bg-emerald-100 text-emerald-800{% endif %}">
+            {{ item.status }}
+          </span>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="5" class="text-center py-8 text-slate-400">Belum ada riwayat peminjaman buku.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

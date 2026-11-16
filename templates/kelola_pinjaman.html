@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1 class="text-2xl font-bold text-slate-900 mb-2">Verifikasi & Status Peminjaman</h1>
+<p class="text-sm text-slate-500 mb-6">Kelola konfirmasi pengembalian buku peminjam</p>
+
+<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+  <table class="w-full text-left text-sm">
+    <thead class="bg-slate-50 border-b border-slate-200 text-xs uppercase text-slate-500 font-semibold">
+      <tr>
+        <th class="py-3 px-4">Peminjam</th>
+        <th class="py-3 px-4">Judul Buku</th>
+        <th class="py-3 px-4">Tgl Pinjam</th>
+        <th class="py-3 px-4">Status</th>
+        <th class="py-3 px-4 text-center">Aksi</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100">
+      {% for p in pinjaman %}
+      <tr class="hover:bg-slate-50/50">
+        <td class="py-3 px-4 font-semibold text-slate-800">{{ p.nama_peminjam }}</td>
+        <td class="py-3 px-4 text-slate-700">{{ p.judul }}</td>
+        <td class="py-3 px-4 text-slate-500">{{ p.tanggal_pinjam }}</td>
+        <td class="py-3 px-4">
+          <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium {% if p.status == 'dipinjam' %}bg-amber-100 text-amber-800{% else %}bg-emerald-100 text-emerald-800{% endif %}">
+            {{ p.status }}
+          </span>
+        </td>
+        <td class="py-3 px-4 text-center">
+          {% if p.status == 'dipinjam' %}
+          <form action="{{ url_for('verifikasi_kembali', pinjam_id=p.id) }}" method="POST">
+            <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3 py-1.5 rounded-md transition">
+              Tandai Kembali
+            </button>
+          </form>
+          {% else %}
+          <span class="text-xs text-slate-400">Selesai ({{ p.tanggal_kembali }})</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="5" class="text-center py-8 text-slate-400">Belum ada riwayat transaksi peminjaman.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
